@@ -129,7 +129,7 @@ then
   assetfinder -subs-only $DOM  >> ~/reconizer/$DOM/Subdomains/assetfinder.txt 
 else
   echo "${blue} [+] Installing Assetfinder ${reset}"
-  go get -u github.com/tomnomnom/assetfinder
+  go install -u github.com/tomnomnom/assetfinder@latest
   echo "${magenta} [+] Running Assetfinder for subdomain enumeration${reset}"
   assetfinder -subs-only $DOM  >> ~/reconizer/$DOM/Subdomains/assetfinder.txt
 fi
@@ -147,7 +147,7 @@ then
 else
   echo "${blue} [+] Installing Amass ${reset}"
   echo "${blue} [+] This may take few minutes hang tight... ${reset}"
-  go get -u github.com/OWASP/Amass/...
+  go install -v github.com/owasp-amass/amass/v4/...@master
   echo "${magenta} [+] Running Amass for subdomain enumeration${reset}"
   amass enum --passive -d $DOM > ~/reconizer/$DOM/Subdomains/amass.txt
 fi
@@ -164,7 +164,7 @@ then
   subfinder -d $DOM -o ~/reconizer/$DOM/Subdomains/subfinder.txt 
 else
   echo "${blue} [+] Installing Subfinder ${reset}"
-  go get -u -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder
+  go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
   echo "${magenta} [+] Running Subfinder for subdomain enumeration${reset}"
   subfinder -d $DOM -o ~/reconizer/$DOM/Subdomains/subfinder.txt
 fi
@@ -209,7 +209,7 @@ then
   cat ~/reconizer/$DOM/Subdomains/all-alive-subs.txt | sed 's/http\(.?*\)*:\/\///g' | sort -u > ~/reconizer/$DOM/Subdomains/protoless-all-alive-subs.txt
 else
   echo "${blue} [+] Installing Httpx ${reset}"
-  go get -u github.com/projectdiscovery/httpx/cmd/httpx
+  go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest
   echo "${magenta} [+] Running Httpx for sorting alive subdomains${reset}"
   cat ~/reconizer/$DOM/Subdomains/unique.txt | httpx >> ~/reconizer/$DOM/Subdomains/all-alive-subs.txt
   cat ~/reconizer/$DOM/Subdomains/all-alive-subs.txt | sed 's/http\(.?*\)*:\/\///g' | sort -u > ~/reconizer/$DOM/Subdomains/protoless-all-alive-subs.txt
@@ -228,7 +228,7 @@ then
   nuclei -l ~/reconizer/$DOM/Subdomains/unique.txt -t ~/nuclei-templates/subdomain-takeover/ -o ~/reconizer/$DOM/Subdomain_takeovers/takeover_results.txt
 else
   echo "${blue} [+] Installing nuclei ${reset}"
-  go get -u -v github.com/projectdiscovery/nuclei/v2/cmd/nuclei
+  go install -v github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest
   echo "${magenta} [+] Running nuclei for finding potential takeovers${reset}"
   nuclei -update-templates
   nuclei -l ~/reconizer/$DOM/Subdomains/unique.txt -t ~/nuclei-templates/subdomain-takeover/ -o ~/reconizer/$DOM/Subdomain_takeovers/takeover_results.txt
@@ -249,7 +249,7 @@ then
   nuclei -l ~/reconizer/$DOM/Subdomains/all-alive-subs.txt -t ~/nuclei-templates/vulnerabilities/ -c 200 -o ~/reconizer/$DOM/nuclei/vulnerabilities_results.txt
 else
   echo "${blue} [+] Installing nuclei ${reset}"
-  go get -u -v github.com/projectdiscovery/nuclei/v2/cmd/nuclei
+  go install -v github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest
   echo "${magenta} [+] Running nuclei ${reset}"
   nuclei -update-templates
   nuclei -l ~/reconizer/$DOM/Subdomains/all-alive-subs.txt -t ~/nuclei-templates/cves/ -c 200 -o ~/reconizer/$DOM/nuclei/cves_results.txt
@@ -307,7 +307,7 @@ then
  dnsx -l ~/reconizer/$DOM/Subdomains/unique.txt -resp-only | sort -u > ~/reconizer/$DOM/Port_Scan/resolved_ips.txt
 else
  echo "${magenta} [+] Installing dnsprobe ${reset}"
- go get -u -v github.com/projectdiscovery/dnsx/cmd/dnsx
+ go install -v github.com/projectdiscovery/dnsx/cmd/dnsx@latest
  echo "${magenta} [+] Running dnsprobe for resolving IP's${reset}"
  dnsx -l ~/reconizer/$DOM/Subdomains/unique.txt -resp-only | sort -u > ~/reconizer/$DOM/Port_Scan/resolved_ips.txt
 fi
@@ -370,7 +370,7 @@ then
  echo "${magenta} [+] Already installed Waybackurls ${reset}"
 else
  echo "${blue} [+] Installing Waybackurls ${reset}"
- go get -u github.com/tomnomnom/waybackurls
+ go install github.com/tomnomnom/waybackurls@latest
 fi
 echo " "
 if [ -f ~/reconizer/$DOM/Archivescan/waybackurls.txt]
@@ -390,7 +390,7 @@ then
  echo "${magenta} [+] Already installed Gau ${reset}"
 else
  echo "${blue} [+] Installing Gau ${reset}"
- go get -u github.com/lc/gau
+ go install github.com/lc/gau/v2/cmd/gau@latest
 fi
 echo " "
 if [ -f ~/reconizer/$DOM/Archivescan/gau.txt ]
@@ -435,7 +435,7 @@ then
  cat  ~/reconizer/$DOM/Archivescan/sorted.txt | gf debug_logic | tee -a ~/reconizer/$DOM/GF_Patterns/debug_logic.txt
 else
  echo "${blue} [+] Installing GF_Patterns ${reset}"
- go get -u github.com/tomnomnom/gf
+ go install github.com/tomnomnom/gf@latest
  git clone https://github.com/1ndianl33t/Gf-Patterns ~/reconizer/tools/Gf-Patterns
  mkdir ~/.gf
  mv ~/reconizer/tools/Gf-Patterns/*.json ~/.gf
@@ -468,19 +468,19 @@ echo " "
 echo "${blue} [+] Checking for dependencies ${reset}"
 if [ -f ~/go/bin/httpx ]
   echo "${blue} [+] Installing httpx ${reset}"
-  go get -u github.com/projectdiscovery/httpx/cmd/httpx
+  go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest
 else
   echo "${magenta} [+] Already installed httpx ${reset}"
 fi
 if [ -f ~/go/bin/anew ]
   echo "${blue} [+] Installing anew ${reset}"
-  go get -u github.com/tomnomnom/anew
+  go install github.com/tomnomnom/anew@latest
 else
   echo "${magenta} [+] Already installed anew ${reset}"
 fi
 if [ -f ~/go/bin/subjs ]
   echo "${blue} [+] Installing subjs ${reset}"
-  go get -u github.com/lc/subjs
+  GO111MODULE=on go get -u -v github.com/lc/subjs@latest
 else
   echo "${magenta} [+] Already installed subjs ${reset}"
 fi
